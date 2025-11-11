@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "glue_score": 0.0,
+    "average_accuracy": 0.0,
+    "average_f1": 0.0,
+    "valid_tasks": 0,
+    "total_tasks": 4
+  },
+  "task_results": {
+    "sst2": {
+      "error": "'tuple' object has no attribute 'to'"
+    },
+    "qnli": {
+      "error": "'tuple' object has no attribute 'to'"
+    },
+    "qqp": {
+      "error": "'tuple' object has no attribute 'to'"
+    },
+    "mnli": {
+      "error": "'tuple' object has no attribute 'to'"
+    }
+  },
+  "timestamp": "2025-11-11 23:43:55",
+  "model_info": {
+    "name": "ProductionPsiQrhTransformer",
+    "d_model": 256,
+    "n_layers": 6,
+    "n_heads": 8
+  }
+}
