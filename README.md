@@ -63,15 +63,7 @@ python genuine_trained_distillation_transformer.py
 This will output:
 text
 
-🚀 ΨQRH EINOPS BENCHMARK GAINS (Paper p.4)
-==================================================
-📊 reshaping_lines             214 → 82 (62%)
-📊 shape_bugs               7/week → 0 (100%)
-📊 forward_time              28.9ms → 26.3ms (+9%)
-📊 memory_fragmentation       High → Low (Significant)
-📊 code_safety               Fragile → Runtime-checked (Robust)
-==================================================
-✅ EinOps integration: COMPLETE AND VALIDATED
+
 
 Training Example
 
