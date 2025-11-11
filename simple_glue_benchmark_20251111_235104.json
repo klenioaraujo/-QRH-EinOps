@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-11-11 23:51:04",
+  "average_accuracy": 0.5391666666666667,
+  "tasks_evaluated": 4,
+  "task_results": {
+    "sst2": {
+      "accuracy": 0.49,
+      "f1": 0.45599999999999996,
+      "num_samples": 100,
+      "task": "sst2"
+    },
+    "qnli": {
+      "accuracy": 0.6666666666666666,
+      "f1": 0.5333333333333333,
+      "num_samples": 100,
+      "task": "qnli"
+    },
+    "qqp": {
+      "accuracy": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "num_samples": 100,
+      "task": "qqp"
+    },
+    "mnli": {
+      "accuracy": 0.3333333333333333,
+      "f1": 0.3333333333333333,
+      "num_samples": 100,
+      "task": "mnli"
+    }
+  },
+  "model": "ProductionPsiQrhTransformer"
+}

@@ -594,41 +594,29 @@ class ProductionPsiQrhTransformer(nn.Module):
         
         # Mean pooling over sequence with robust dimension handling
         # x shape: [batch, seq, ..., d_model]
-        if input_ids is not None:
-            # Mask padding tokens - input_ids shape: [batch, seq]
-            padding_mask = (input_ids != 0).float()
+        # Simplificar: sempre usar mean pooling sobre a dimensão de sequência
+        # Garantir que x tenha shape [batch, seq, d_model]
+        
+        # Debug: verificar shape atual
+        # print(f"DEBUG transformer forward - x shape: {x.shape}")
+        
+        # Reshape para [batch, seq, d_model] se necessário
+        if x.dim() > 3:
+            # x shape: [batch, seq, extra_dims..., d_model]
+            batch_size, seq_len = x.shape[0], x.shape[1]
+            d_model = x.shape[-1]
             
-            # Ensure batch sizes match
-            if x.shape[0] != padding_mask.shape[0]:
-                # If batch sizes don't match, use simple mean pooling
-                sequence_rep = x.mean(dim=1)
-            else:
-                # Robust approach: ensure x has exactly [batch, seq, d_model] shape
-                # If x has extra dimensions, flatten them into d_model
-                if x.dim() > 3:
-                    # x shape: [batch, seq, extra_dims..., d_model]
-                    batch_size, seq_len = x.shape[0], x.shape[1]
-                    d_model = x.shape[-1]
-                    
-                    # Flatten all extra dimensions into d_model
-                    x_flat = x.reshape(batch_size, seq_len, -1)
-                    
-                    # Ensure final dimension matches d_model
-                    if x_flat.shape[-1] != d_model:
-                        # If flattened dimension is larger, take first d_model elements
-                        x_flat = x_flat[:, :, :d_model]
-                    
-                    # Expand padding_mask to match x_flat
-                    padding_mask_expanded = padding_mask.unsqueeze(-1).expand_as(x_flat)
-                    
-                    # Sum over sequence dimension and normalize
-                    sequence_rep = (x_flat * padding_mask_expanded).sum(dim=1) / padding_mask_expanded.sum(dim=1).clamp(min=1.0)
-                else:
-                    # x already has correct shape [batch, seq, d_model]
-                    padding_mask_expanded = padding_mask.unsqueeze(-1).expand_as(x)
-                    sequence_rep = (x * padding_mask_expanded).sum(dim=1) / padding_mask_expanded.sum(dim=1).clamp(min=1.0)
+            # Flatten all extra dimensions into d_model
+            x_flat = x.reshape(batch_size, seq_len, -1)
+            
+            # Ensure final dimension matches d_model
+            if x_flat.shape[-1] != d_model:
+                # If flattened dimension is larger, take first d_model elements
+                x_flat = x_flat[:, :, :d_model]
+            
+            sequence_rep = x_flat.mean(dim=1)
         else:
-            # Mean over sequence dimension (dim=1)
+            # x already has correct shape [batch, seq, d_model]
             sequence_rep = x.mean(dim=1)
         
         logits = self.classifier(sequence_rep)
