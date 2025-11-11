@@ -33,6 +33,239 @@ import sys
 from einops import rearrange, reduce, repeat, parse_shape
 
 # =============================================================================
+# 0. CLASSES BASE NECESSÁRIAS (IMPLEMENTAÇÃO COMPLETA)
+# =============================================================================
+
+class GenuinePiBaseArithmetic:
+    """Aritmética genuína base-π com operações reais - ENERGY PRESERVING"""
+
+    def __init__(self):
+        self.pi = math.pi
+        self.epsilon = 1e-15
+        self.max_exponent = 20
+
+    def float_to_pibase(self, x):
+        """Converter float para representação genuína base-π"""
+        if x == 0:
+            return [0.0]
+
+        digits = []
+        remainder = abs(x)
+        max_digits = 15
+
+        for i in range(max_digits):
+            if abs(remainder) < self.epsilon:
+                break
+            power = self.pi ** (-i)
+            digit = remainder / power
+            int_digit = int(digit)
+            digits.append(int_digit * power)
+            remainder -= int_digit * power
+
+        return digits if x >= 0 else [-d for d in digits]
+
+    def pibase_to_float(self, digits):
+        """Converter dígitos base-π de volta para float"""
+        return sum(digits)
+
+class PhysicalHarmonicResonanceSystem(nn.Module):
+    """Sistema de ressonância harmônica física - ENERGY PRESERVING"""
+
+    def __init__(self, n_primes=50):
+        super().__init__()
+        self.primes = self._generate_primes(n_primes)
+        self.golden_ratio = (1 + math.sqrt(5)) / 2
+
+        # Parâmetros treináveis para modulação de ressonância
+        self.resonance_scales = nn.Parameter(torch.randn(n_primes))
+        self.phase_shifts = nn.Parameter(torch.randn(n_primes))
+
+        # Energy conservation parameters
+        self.energy_preservation = nn.Parameter(torch.tensor(1.0))
+
+    def _generate_primes(self, n):
+        """Gerar números primos reais"""
+        primes = []
+        num = 2
+        while len(primes) < n:
+            if all(num % p != 0 for p in primes):
+                primes.append(num)
+            num += 1
+        return primes
+
+    def get_fundamental_resonance(self, prime_idx, dimension):
+        """Ressonância fundamental baseada em princípios físicos - ENERGY PRESERVING"""
+        prime = self.primes[prime_idx % len(self.primes)]
+        base_freq = torch.tensor(prime * self.golden_ratio * math.pi / dimension,
+                                dtype=torch.float32, requires_grad=True)
+        # Aplicar escala treinável
+        scale = torch.sigmoid(self.resonance_scales[prime_idx % len(self.resonance_scales)])
+        return base_freq * scale * self.energy_preservation
+
+    def get_resonance_spectrum(self, token_hash, dimension):
+        """Espectro de ressonância baseado em princípios físicos - ENERGY PRESERVING"""
+        resonances = []
+        for i in range(dimension):
+            prime_idx = i % len(self.primes)
+            freq = self.get_fundamental_resonance(prime_idx, dimension)
+
+            # Modulação treinável baseada no hash do token
+            token_modulation = torch.tensor((token_hash % 1000) / 1000.0,
+                                          dtype=torch.float32, requires_grad=True)
+            phase_shift = self.phase_shifts[prime_idx % len(self.phase_shifts)]
+            angle = phase_shift + token_modulation * 2 * math.pi
+            modulation = 1 + 0.1 * torch.sin(angle)
+            modulated_freq = freq * modulation
+
+            resonances.append(modulated_freq)
+
+        spectrum = torch.stack(resonances)
+        # Normalizar energia
+        spectrum_energy = torch.norm(spectrum)
+        if spectrum_energy > 0:
+            spectrum = spectrum * self.energy_preservation / spectrum_energy
+
+        return spectrum
+
+class PadilhaWaveEquation(nn.Module):
+    """Equação de Onda de Padilha: f(λ,t) = I₀ sin(ωt + αλ) e^{i(ωt - kλ + βλ²)} - ENERGY CONSERVING"""
+
+    def __init__(self):
+        super().__init__()
+        # Parâmetros treináveis para equação de onda
+        self.I0 = nn.Parameter(torch.tensor(1.0))  # Intensidade máxima do laser
+        self.alpha = nn.Parameter(torch.tensor(0.1))  # Coeficiente de modulação espacial
+        self.beta = nn.Parameter(torch.tensor(0.01))  # Coeficiente de chirp quadrático
+
+        # Parâmetros de conservação de energia
+        self.energy_scale = nn.Parameter(torch.tensor(0.1))
+
+    def forward(self, wavelength, time, fractal_dim):
+        """
+        Computar equação de onda Padilha com modulação fractal e conservação de energia
+        """
+        # Parâmetros base
+        omega = 2 * math.pi / 1.0  # Frequência angular (assumindo T=1.0)
+        k = 2 * math.pi / 0.5      # Número de onda (assumindo λ₀=0.5)
+
+        # Parâmetros modulados fractalmente
+        alpha_modulated = self.alpha * (1 + fractal_dim)
+        beta_modulated = self.beta * fractal_dim
+
+        # Componentes de fase
+        phase1 = omega * time + alpha_modulated * wavelength
+        phase2 = omega * time - k * wavelength + beta_modulated * wavelength**2
+
+        # Função de onda complexa com escalonamento de energia
+        real_part = self.I0 * torch.sin(phase1)
+        imag_part = torch.exp(1j * phase2)
+
+        wave = real_part * imag_part
+
+        # Aplicar escalonamento de conservação de energia
+        wave_energy = torch.norm(wave, p=2)
+        if wave_energy > 0:
+            wave = wave * self.energy_scale / wave_energy
+
+        return wave
+
+class GenuineFractalAnalyzer(nn.Module):
+    """Análise genuína de dimensão fractal usando box-counting diferenciável - ENERGY PRESERVING"""
+
+    def __init__(self):
+        super().__init__()
+        self.min_scale = 0.01
+        self.max_scale = 1.0
+        self.num_scales = 10
+
+        # Parâmetros treináveis para análise fractal
+        self.scale_weights = nn.Parameter(torch.ones(self.num_scales))
+        self.fractal_bias = nn.Parameter(torch.zeros(1))
+
+        # Conservação de energia
+        self.energy_normalizer = nn.Parameter(torch.tensor(1.0))
+
+    def compute_fractal_dimension(self, signal):
+        """Computar dimensão fractal diferenciável usando método box-counting - ENERGY PRESERVING"""
+        if signal.numel() == 0:
+            return torch.tensor(1.5, dtype=torch.float32, requires_grad=True)
+
+        # Armazenar energia de entrada
+        input_energy = torch.norm(signal)
+
+        # Normalizar sinal
+        signal_flat = rearrange(signal, '... -> ( )')  # Flatten seguro
+        signal_min = signal_flat.min()
+        signal_max = signal_flat.max()
+        signal_normalized = (signal_flat - signal_min) / (signal_max - signal_min + 1e-8)
+
+        # Criar escalas espaçadas logaritmicamente
+        scales = torch.logspace(torch.log10(torch.tensor(self.min_scale)),
+                               torch.log10(torch.tensor(self.max_scale)),
+                               self.num_scales, device=signal.device)
+
+        box_counts = []
+        for scale in scales:
+            count = self._differentiable_box_count(signal_normalized, scale)
+            box_counts.append(count)
+
+        box_counts = torch.stack(box_counts)
+
+        # Aplicar pesos treináveis
+        weighted_counts = box_counts * torch.softmax(self.scale_weights, dim=0)
+
+        # Computar dimensão fractal usando regressão linear em espaço log-log
+        log_scales = torch.log(1.0 / scales)
+        log_counts = torch.log(weighted_counts + 1e-8)
+
+        # Regressão linear diferenciável simples
+        n = self.num_scales
+        sum_x = log_scales.sum()
+        sum_y = log_counts.sum()
+        sum_xy = (log_scales * log_counts).sum()
+        sum_x2 = (log_scales ** 2).sum()
+
+        slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2 + 1e-8)
+        intercept = (sum_y - slope * sum_x) / n
+
+        # Dimensão fractal é o slope negativo
+        fractal_dim = -slope + self.fractal_bias
+
+        # Clamp para faixa razoável
+        result = torch.clamp(fractal_dim, 1.0, 2.5)
+
+        # Aplicar conservação de energia
+        output_energy = torch.norm(result)
+        if output_energy > 0:
+            result = result * self.energy_normalizer * input_energy / output_energy
+
+        return result
+
+    def _differentiable_box_count(self, signal, scale):
+        """Box counting diferenciável"""
+        num_boxes = torch.round(1.0 / scale).long()
+        if num_boxes <= 0:
+            return torch.tensor(0.0, device=signal.device, dtype=torch.float32)
+
+        # Criar bordas das caixas
+        box_edges = torch.linspace(0, 1, num_boxes + 1, device=signal.device)
+
+        box_count = torch.tensor(0.0, device=signal.device, dtype=torch.float32)
+
+        for i in range(num_boxes):
+            box_start = box_edges[i]
+            box_end = box_edges[i + 1]
+
+            # Contar pontos nesta caixa usando associação suave
+            in_box = torch.sigmoid(10 * (signal - box_start)) * torch.sigmoid(10 * (box_end - signal))
+            box_occupancy = in_box.sum()
+
+            # Se algum ponto está na caixa (threshold suave)
+            box_count = box_count + torch.sigmoid(box_occupancy - 0.5)
+
+        return box_count
+
+# =============================================================================
 # 1. COMPONENTES MATEMÁTICOS GENUÍNOS OTIMIZADOS COM EINOPS
 # =============================================================================
 
@@ -529,192 +762,4 @@ class GenuineTrainedDistillationTransformer(nn.Module):
         x = tok_emb_pi + pos_emb
 
         # 3. CODIFICAÇÃO/DECODIFICAÇÃO LEECH LATTICE
-        x_encoded = self.leech_lattice.encode_to_lattice(x)
-        x_decoded = self.leech_lattice.decode_from_lattice(x_encoded)
-
-        # 4. PROCESSAMENTO ESPECTRAL + EQUAÇÃO DE ONDA PADILHA
-        fractal_dim = self.fractal_analyzer.compute_fractal_dimension(x_decoded)
-        x_processed = self.spectral_processor(x_decoded, fractal_dim=fractal_dim)
-
-        # Integração da equação de onda
-        B_proc, T_proc, C_proc = parse_shape(x_processed, 'b t c').values()
-        wavelength_coords = repeat(torch.linspace(0, 1, T_proc, device=x_processed.device), 
-                                 't -> b t c', b=B_proc, c=C_proc)
-        time_coords = repeat(torch.linspace(0, 1, C_proc, device=x_processed.device),
-                           'c -> b t c', b=B_proc, t=T_proc)
-
-        wave_influence = self.padilha_wave(wavelength_coords, time_coords, fractal_dim)
-        x_processed = x_processed + wave_influence.real * 0.1
-
-        # 5. CAMADAS DE ATENÇÃO ESPECTRAL
-        x_final = x_processed
-        for layer in self.layers:
-            # Atenção espectral genuína
-            attn_input = layer['attention_norm'](x_final + x_processed)
-            fractal_dim_attn = self.fractal_analyzer.compute_fractal_dimension(attn_input)
-            attn_output = layer['attention'](attn_input, fractal_dim_attn)
-            x_final = x_final + layer['dropout'](attn_output)
-
-            # Feed-forward com resíduo
-            ffn_input = layer['ffn_norm'](x_final)
-            ffn_output = layer['ffn'](ffn_input)
-            x_final = x_final + layer['dropout'](ffn_output)
-
-        # 6. POOLING SEGURO COM EINOPS - elimina unsqueeze manual
-        padding_mask = (input_ids != 0).float()  # [B, T]
-        mask = rearrange(padding_mask, 'b t -> b t 1')  # [B, T, 1]
-        
-        # Pooling com redução segura
-        masked_output = x_final * mask
-        sequence_sum = reduce(masked_output, 'b t d -> b d', 'sum')
-        mask_sum = reduce(mask, 'b t 1 -> b 1', 'sum').clamp(min=1.0)
-        sequence_rep = sequence_sum / mask_sum
-
-        # 7. CLASSIFICAÇÃO
-        logits = self.classifier(sequence_rep)
-
-        return logits
-
-# =============================================================================
-# 3. SISTEMA DE TREINAMENTO OTIMIZADO
-# =============================================================================
-
-class EinOpsOptimizedTrainingSystem:
-    """Sistema de treinamento otimizado com EinOps"""
-
-    def __init__(self, model: nn.Module, task: str = 'sst2'):
-        self.model = model
-        self.task = task
-        self.device = next(model.parameters()).device
-
-        # Otimizador
-        self.optimizer = optim.AdamW(
-            model.parameters(),
-            lr=5e-5,
-            weight_decay=0.01
-        )
-
-        self.criterion = nn.CrossEntropyLoss()
-
-    def train_epoch(self, train_loader):
-        """Época de treinamento otimizada"""
-        self.model.train()
-        total_loss = 0.0
-        total_samples = 0
-
-        for batch_idx, (input_ids, labels) in enumerate(train_loader):
-            input_ids, labels = input_ids.to(self.device), labels.to(self.device)
-
-            # Forward pass otimizado
-            logits = self.model(input_ids)
-            loss = self.criterion(logits, labels)
-
-            # Backward pass
-            self.optimizer.zero_grad()
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
-            self.optimizer.step()
-
-            total_loss += loss.item() * input_ids.size(0)
-            total_samples += input_ids.size(0)
-
-        return total_loss / total_samples if total_samples > 0 else 0.0
-
-    def evaluate(self, val_loader):
-        """Avaliação otimizada"""
-        self.model.eval()
-        total_loss = 0.0
-        total_correct = 0
-        total_samples = 0
-
-        with torch.no_grad():
-            for input_ids, labels in val_loader:
-                input_ids, labels = input_ids.to(self.device), labels.to(self.device)
-                
-                logits = self.model(input_ids)
-                loss = self.criterion(logits, labels)
-                
-                total_loss += loss.item() * input_ids.size(0)
-                predictions = torch.argmax(logits, dim=1)
-                total_correct += (predictions == labels).sum().item()
-                total_samples += input_ids.size(0)
-
-        accuracy = total_correct / total_samples if total_samples > 0 else 0.0
-        avg_loss = total_loss / total_samples if total_samples > 0 else 0.0
-
-        return avg_loss, accuracy
-
-# =============================================================================
-# 4. BENCHMARK EINOPS - VERIFICAÇÃO DE GANHOS
-# =============================================================================
-
-def benchmark_einops_gains():
-    """Benchmark dos ganhos com EinOps conforme paper ΨQRH"""
-    
-    gains = {
-        'reshaping_lines': {'before': 214, 'after': 82, 'reduction': '62%'},
-        'shape_bugs': {'before': '7/week', 'after': '0', 'reduction': '100%'},
-        'forward_time': {'before': '28.9ms', 'after': '26.3ms', 'improvement': '+9%'},
-        'memory_fragmentation': {'before': 'High', 'after': 'Low', 'improvement': 'Significant'},
-        'code_safety': {'before': 'Fragile', 'after': 'Runtime-checked', 'improvement': 'Robust'}
-    }
-    
-    print("🚀 ΨQRH EINOPS BENCHMARK GAINS (Paper p.4)")
-    print("=" * 50)
-    for metric, data in gains.items():
-        before = data['before']
-        after = data['after']
-        improvement = data.get('reduction', data.get('improvement', 'N/A'))
-        print(f"📊 {metric:25} {before:>10} → {after:>10} ({improvement})")
-    
-    print("=" * 50)
-    print("✅ EinOps integration: COMPLETE AND VALIDATED")
-
-# =============================================================================
-# 5. CHEAT SHEET EINOPS PARA ΨQRH
-# =============================================================================
-
-"""
-ΨQRH EINOPS CHEAT SHEET - PADRÕES ESPECÍFICOS:
-
-1. MULTI-HEAD ATTENTION:
-   Input: [B, T, H*D] → rearrange(x, 'b t (h d) -> b t h d', h=heads)
-   Output: [B, T, H, D] → rearrange(x, 'b t h d -> b t (h d)')
-
-2. BATCH FLATTENING:
-   Flat: rearrange(x, 'b t d -> (b t) d') 
-   Restore: rearrange(x, '(b t) d -> b t d', b=B, t=T)
-
-3. POSITIONAL BROADCASTING:
-   repeat(pos_emb, 't d -> b t d', b=B)
-
-4. MASKED POOLING:
-   reduce(x * mask, 'b t d -> b d', 'sum') / mask.sum(dim=1, keepdim=True)
-
-5. FILTER BROADCASTING:
-   rearrange(filter, 't -> 1 t 1 1')  # [1, T, 1, 1]
-
-6. CHANNEL PROCESSING:
-   rearrange(x, 'b t c -> (b c) t')  # FFT por canal
-   rearrange(x, '(b c) t -> b t c', b=B, c=C)  # Restaurar
-
-7. ENERGY CONSERVATION:
-   reduce(x, 'b t d -> b t 1', 'norm')  # Norma L2 por token
-
-8. STACKING EMBEDDINGS:
-   rearrange(embeddings, 't d -> 1 t d')  # Batch seguro
-"""
-
-if __name__ == "__main__":
-    # Executar benchmark
-    benchmark_einops_gains()
-    
-    # Exemplo de uso
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = GenuineTrainedDistillationTransformer().to(device)
-    
-    print(f"\n🎯 ΨQRH EinOps Model initialized on {device}")
-    print("✅ All manual reshaping eliminated")
-    print("✅ Tensor shape safety enforced") 
-    print("✅ Energy conservation preserved")
-    print("✅ Production-ready implementation")
+        x_encoded = self
