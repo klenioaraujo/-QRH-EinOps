@@ -1,5 +1,5 @@
-# ΨQRH EINOPS OPTIMIZED - Requirements
-# Production-grade dependencies for the optimized ΨQRH system
+# PSIQRH PRODUCTION GRADE - Requirements
+# Production-grade dependencies for the optimized PSIQRH system
 
 # Core ML Framework
 torch>=2.0.0
@@ -10,22 +10,32 @@ einops>=0.7.0
 # Scientific Computing
 numpy>=1.21.0
 
+# Data Loading and Datasets
+datasets>=2.10.0
+transformers>=4.30.0
+
+# Metrics and Evaluation
+scikit-learn>=1.2.0
+torchmetrics>=0.11.0
+
+# Visualization
+matplotlib>=3.5.0
+seaborn>=0.12.0
+
+# Memory Monitoring
+nvidia-ml-py>=12.0.0
+
 # Logging and Utilities
-logging
-math
-time
-sys
+tqdm>=4.64.0
+pandas>=1.5.0
+
+# Testing and Validation
+pytest>=7.0.0
+pytest-benchmark>=4.0.0
 
 # Optional: For advanced mathematical operations
 scipy>=1.7.0
 
-# Optional: For data loading and preprocessing
-torchvision>=0.15.0
-
 # Optional: For model deployment
 onnx>=1.13.0
 onnxruntime>=1.14.0
-
-# Optional: For testing and validation
-pytest>=7.0.0
-pytest-benchmark>=4.0.0

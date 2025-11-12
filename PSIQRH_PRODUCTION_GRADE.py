@@ -1,7 +1,7 @@
 
 #!/usr/bin/env python3
 """
-ΨQRH Production Grade Implementation
+PSIQRH Production Grade Implementation
 ====================================
 
 A mathematically correct and performance-optimized implementation of the ΨQRH framework
