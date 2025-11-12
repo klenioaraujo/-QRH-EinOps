@@ -1,0 +1,31 @@
+# ΨQRH EINOPS OPTIMIZED - Requirements
+# Production-grade dependencies for the optimized ΨQRH system
+
+# Core ML Framework
+torch>=2.0.0
+
+# Tensor Operations (Essential for EinOps optimization)
+einops>=0.7.0
+
+# Scientific Computing
+numpy>=1.21.0
+
+# Logging and Utilities
+logging
+math
+time
+sys
+
+# Optional: For advanced mathematical operations
+scipy>=1.7.0
+
+# Optional: For data loading and preprocessing
+torchvision>=0.15.0
+
+# Optional: For model deployment
+onnx>=1.13.0
+onnxruntime>=1.14.0
+
+# Optional: For testing and validation
+pytest>=7.0.0
+pytest-benchmark>=4.0.0
